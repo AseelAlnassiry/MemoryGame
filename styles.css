@@ -4,17 +4,25 @@
 }
 
 @keyframes titlePulse {
-  0% {font-size: 3rem;}
-  50% {font-size: 5rem;}
-  100% {font-size: 3rem;}
+  0% {
+    font-size: 3rem;
+  }
+  50% {
+    font-size: 5rem;
+  }
+  100% {
+    font-size: 3rem;
+  }
 }
 
 @keyframes titleHide {
-  100% {opacity: 0;}
+  100% {
+    opacity: 0;
+  }
 }
 
 body {
-  background-color: #A2D2FF;
+  background-color: #a2d2ff;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   display: flex;
   flex-direction: column;
@@ -31,7 +39,7 @@ body {
   gap: 4rem;
   align-items: center;
   min-width: 26rem;
-} 
+}
 
 .hide {
   animation: titleHide 1s forwards;
@@ -50,11 +58,10 @@ body {
   justify-content: center;
   color: #aa73ca;
   min-height: 12rem;
-  
 }
 
 .starting-title h1 {
-  margin: .2rem;
+  margin: 0.2rem;
   animation: titlePulse 3s infinite;
 }
 
@@ -68,7 +75,7 @@ body {
   font-size: 1.25rem;
   font-weight: 800;
   padding: 1rem 3rem;
-  border-radius: .25rem;
+  border-radius: 0.25rem;
   border: none;
   background-color: #f370a2;
   color: white;
@@ -87,22 +94,31 @@ body {
 }
 
 .game-box {
-  min-width: 7rem;
-  min-height: 7rem;
+  width: 7rem;
+  height: 7rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 2px solid #f370a2;
   border-radius: 20px;
-  background: #ca70f3;
 }
 
 .middle-tile {
   background-color: transparent;
   font-size: 5rem;
   font-weight: bolder;
+  border: none;
   color: #fc0000;
   font-family: 'Play', sans-serif;
 }
 
+.card {
+  height: 100%;
+  width: 100%;
+  object-fit: fill;
+  border-radius: 18px;
+}
 
-
+.hidden {
+  display: none;
+}

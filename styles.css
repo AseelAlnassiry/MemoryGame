@@ -1,0 +1,108 @@
+@font-face {
+  font-family: Warden;
+  src: url('Warden\ Typeface.otf');
+}
+
+@keyframes titlePulse {
+  0% {font-size: 3rem;}
+  50% {font-size: 5rem;}
+  100% {font-size: 3rem;}
+}
+
+@keyframes titleHide {
+  100% {opacity: 0;}
+}
+
+body {
+  background-color: #A2D2FF;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.starting-page {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  align-items: center;
+  min-width: 26rem;
+} 
+
+.hide {
+  animation: titleHide 1s forwards;
+}
+
+.appear {
+  animation: titleHide 1s reverse;
+}
+
+.starting-title {
+  font-family: Warden;
+  font-size: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #aa73ca;
+  min-height: 12rem;
+  
+}
+
+.starting-title h1 {
+  margin: .2rem;
+  animation: titlePulse 3s infinite;
+}
+
+.starting-score {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #f370a2;
+}
+
+.starting-page button {
+  font-size: 1.25rem;
+  font-weight: 800;
+  padding: 1rem 3rem;
+  border-radius: .25rem;
+  border: none;
+  background-color: #f370a2;
+  color: white;
+  cursor: pointer;
+}
+
+.game-page {
+  display: none;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.game-row {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.game-box {
+  min-width: 7rem;
+  min-height: 7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  background: #ca70f3;
+}
+
+.middle-tile {
+  background-color: transparent;
+  font-size: 5rem;
+  font-weight: bolder;
+  color: #fc0000;
+  font-family: 'Play', sans-serif;
+}
+
+
+

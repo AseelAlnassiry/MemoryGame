@@ -5,21 +5,27 @@ const startButton = document.querySelector('.starting-page button');
 
 // Meme Array
 const memePics = [
-  'deez.gif',
-  'theWok.gif',
-  'squid.gif',
-  'shovel.gif',
-  'speaking.gif',
-  'walter.gif',
-  'walking.gif',
-  'courage.gif',
+  { name: 'deez.gif', count: 0 },
+  { name: 'dance.gif', count: 0 },
+  { name: 'chad.gif', count: 0 },
+  { name: 'courage.gif', count: 0 },
+  { name: 'knife.gif', count: 0 },
+  { name: 'shovel.gif', count: 0 },
+  { name: 'speaking.gif', count: 0 },
+  { name: 'squid.gif', count: 0 },
+  { name: 'theWok.gif', count: 0 },
+  { name: 'drunk.gif', count: 0 },
+  { name: 'walking.gif', count: 0 },
+  { name: 'walter.gif', count: 0 },
 ];
 
+// Flip the cards by toggling their classes
 const flipCard = (box) => {
   box.firstChild.classList.toggle('hidden');
   box.lastChild.classList.toggle('hidden');
 };
 
+// Add the listeners to cards so they can be functional
 const addListeners = () => {
   // Find the row
   for (let row of gamePage.children) {
@@ -31,8 +37,25 @@ const addListeners = () => {
   }
 };
 
+// Assign a front to each card based on the meme array
+const assignFront = (box) => {
+  rmi = Math.floor(Math.random() * 12);
+  console.log(memePics[rmi].name);
+  while (memePics[rmi].count === 2) {
+    rmi = Math.floor(Math.random() * 12);
+  }
+
+  const newImg = document.createElement('img');
+  newImg.src = memePics[rmi].name;
+  newImg.alt = 'Card Front';
+  newImg.classList.add('card')
+  newImg.classList.add('hidden')
+  box.appendChild(newImg);
+  memePics[rmi].count++;
+};
+
 // Add the back card to every card
-// Makes sure that the center piece doesn't get a card back
+// Makes sure that the center piece doesn't get a back card
 const addBack = () => {
   // Find the row
   for (let row of gamePage.children) {
@@ -48,23 +71,21 @@ const addBack = () => {
   }
 };
 
+// Add the front card to every card
+// Makes sure that the center piece doesn't get a front card
+// Makes sure each front is only used twice and that its used twice
 const addFront = () => {
+  let id = 1;
   for (let row of gamePage.children) {
     for (let box of row.children) {
       if (!box.classList.contains('middle-tile')) {
-        const newImg = document.createElement('img');
-        newImg.src = memePics[Math.floor(Math.random() * memePics.length)];
-        newImg.alt = 'Card Back';
-        newImg.classList.add('card');
-        newImg.classList.add('hidden');
-        box.appendChild(newImg);
+        assignFront(box)
       }
     }
   }
 };
 
-// This function's main purpose is to make the title screen disappear
-// The screen should traverse up and become hidden
+// Make the title screen disappear
 const dissipateTitle = () => {
   // give the title screen the class of hide
   startingPage.classList.toggle('hide');

@@ -210,7 +210,7 @@ const initGame = () => {
   addBack();
   addFront();
   firstReveal();
-  addListeners();
+  setInterval(() => addListeners(), 6000);
 };
 
 // The event that restarts the game

@@ -7,9 +7,7 @@
     <link rel="stylesheet" href="styles.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Play:wght@700&display=swap"
-      rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Play:wght@700&display=swap" rel="stylesheet" />
     <title>Document</title>
   </head>
   <body>
@@ -24,14 +22,14 @@
       </div>
       <div class="starting-score">
         <span>BEST SCORE:</span>
-        <span>-</span>
+        <span id="initial-high-score">-</span>
       </div>
       <button>Start Game</button>
     </section>
 
     <!-- Game Page -->
     <!-- 5 x 5 grid displaying cards -->
-    <!-- The center is a timer -->
+    <!-- The center is a score -->
     <section class="game-page">
       <div class="game-row">
         <div class="game-box" id="a"></div>
@@ -50,7 +48,7 @@
       <div class="game-row">
         <div class="game-box" id="k"></div>
         <div class="game-box" id="l"></div>
-        <div class="game-box middle-tile">24</div>
+        <div class="game-box middle-tile">0</div>
         <div class="game-box" id="m"></div>
         <div class="game-box" id="n"></div>
       </div>
@@ -67,6 +65,20 @@
         <div class="game-box" id="v"></div>
         <div class="game-box" id="w"></div>
         <div class="game-box" id="x"></div>
+      </div>
+    </section>
+
+    <section id="ending-page" class="starting-page hidden">
+      <div class="starting-title">
+        <h1>FINAL SCORE:</h1>
+        <h1 id="final-score">32</h1>
+      </div>
+      <div class="starting-score">
+        <span>BEST SCORE:</span>
+        <span id="final-high-score">-</span>
+      </div>
+      <div class="end-buttons">
+        <button id="restart-button">Restart Game</button>
       </div>
     </section>
 

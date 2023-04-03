@@ -122,3 +122,10 @@ body {
 .hidden {
   display: none;
 }
+
+.end-buttons {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+}

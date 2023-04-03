@@ -1,7 +1,24 @@
 // Identifiers
 const startingPage = document.querySelector('.starting-page');
 const gamePage = document.querySelector('.game-page');
+const endingPage = document.querySelector('#ending-page');
 const startButton = document.querySelector('.starting-page button');
+const scoreBox = document.querySelector('.middle-tile');
+const startHighScore = document.querySelector('#initial-high-score');
+const finalScoreBox = document.querySelector('#final-score');
+const finalHighScore = document.querySelector('#final-high-score');
+const restartButton = document.querySelector('#restart-button');
+let disableClicks = false;
+let firstCard = null;
+let secondCard = null;
+let cardsFlipped = 0;
+let score = 0;
+
+// High score from storage
+let highScore = localStorage.getItem('highScore');
+if (highScore) {
+  startHighScore.innerText = highScore;
+}
 
 // Meme Array
 const memePics = [
@@ -19,39 +36,19 @@ const memePics = [
   { name: 'walter.gif', count: 0 },
 ];
 
-// Flip the cards by toggling their classes
-const flipCard = (box) => {
-  box.firstChild.classList.toggle('hidden');
-  box.lastChild.classList.toggle('hidden');
-};
-
-// Add the listeners to cards so they can be functional
-const addListeners = () => {
-  // Find the row
-  for (let row of gamePage.children) {
-    for (let box of row.children) {
-      if (!box.classList.contains('middle-tile')) {
-        box.addEventListener('click', () => flipCard(box));
-      }
-    }
-  }
-};
-
-// Assign a front to each card based on the meme array
-const assignFront = (box) => {
-  rmi = Math.floor(Math.random() * 12);
-  console.log(memePics[rmi].name);
-  while (memePics[rmi].count === 2) {
-    rmi = Math.floor(Math.random() * 12);
-  }
-
-  const newImg = document.createElement('img');
-  newImg.src = memePics[rmi].name;
-  newImg.alt = 'Card Front';
-  newImg.classList.add('card')
-  newImg.classList.add('hidden')
-  box.appendChild(newImg);
-  memePics[rmi].count++;
+// Make the title screen disappear
+const dissipateTitle = () => {
+  // give the title screen the class of hide
+  startingPage.classList.toggle('hide');
+  // Hide the title screen and flash in the game screen
+  setTimeout(() => (startingPage.style.display = 'none'), 1000);
+  setTimeout(() => {
+    gamePage.style.display = 'flex';
+    gamePage.classList.add('appear');
+  }, 1000);
+  setTimeout(() => {
+    gamePage.classList.remove('appear');
+  }, 2000);
 };
 
 // Add the back card to every card
@@ -71,30 +68,136 @@ const addBack = () => {
   }
 };
 
+// Assign a front to each card based on the meme array
+// Makes sure each front is only used twice and that its used twice
+const assignFront = (box) => {
+  rmi = Math.floor(Math.random() * 12);
+  while (memePics[rmi].count === 2) {
+    rmi = Math.floor(Math.random() * 12);
+  }
+  const newImg = document.createElement('img');
+  newImg.src = memePics[rmi].name;
+  newImg.alt = 'Card Front';
+  newImg.classList.add('card');
+  newImg.classList.add('hidden');
+  box.appendChild(newImg);
+  memePics[rmi].count++;
+};
+
 // Add the front card to every card
 // Makes sure that the center piece doesn't get a front card
-// Makes sure each front is only used twice and that its used twice
 const addFront = () => {
   let id = 1;
   for (let row of gamePage.children) {
     for (let box of row.children) {
       if (!box.classList.contains('middle-tile')) {
-        assignFront(box)
+        assignFront(box);
       }
     }
   }
 };
 
-// Make the title screen disappear
-const dissipateTitle = () => {
+// Flip the cards by toggling their classes
+const flipCard = (box) => {
+  box.firstChild.classList.toggle('hidden');
+  box.lastChild.classList.toggle('hidden');
+};
+
+// Does the inital reveal for each card
+// Allows for the cards to be seen for 5 seconds before the game begins
+const firstReveal = () => {
+  console.log('i ran?');
+  for (let row of gamePage.children) {
+    for (let box of row.children) {
+      if (!box.classList.contains('middle-tile')) {
+        setTimeout(() => flipCard(box), 3000);
+        setTimeout(() => flipCard(box), 6000);
+      }
+    }
+  }
+};
+
+// Updates the current score and adds it to the score box
+const updateScore = () => {
+  let currentScore = scoreBox.innerText;
+  const newScore = Number(currentScore) + 1;
+  score++;
+  scoreBox.innerText = newScore;
+};
+
+// Takes player to end screen
+const finishGame = () => {
   // give the title screen the class of hide
-  startingPage.classList.toggle('hide');
+  gamePage.classList.toggle('hide');
   // Hide the title screen and flash in the game screen
-  setTimeout(() => (startingPage.style.display = 'none'), 1000);
+  setTimeout(() => (gamePage.style.display = 'none'), 1000);
   setTimeout(() => {
-    gamePage.style.display = 'flex';
-    gamePage.classList.add('appear');
+    endingPage.style.display = 'flex';
+    endingPage.classList.add('appear');
   }, 1000);
+  setTimeout(() => {
+    endingPage.classList.remove('appear');
+  }, 2000);
+  finalScoreBox.innerText = score;
+  if (highScore) {
+    highScore = score < highScore ? score : highScore;
+  } else {
+    highScore = score;
+  }
+  localStorage.setItem('highScore', highScore);
+  finalHighScore.innerText = highScore;
+};
+
+// Main game function
+// This function should do multiple things:
+// 1- Check if a card is already flipped or no clicks are allowed
+// 2- Assign a first card or a second card if already a first
+// 3- Check card matching if there's already two cards
+// 4- Handle score upkeep
+// 5- Check if the game is over
+const handleCardClick = (box) => {
+  if (disableClicks) return;
+  if (!box.lastChild.classList.contains('hidden')) return;
+  const currentCard = box;
+  if (!firstCard || !secondCard) {
+    flipCard(box);
+    firstCard = firstCard || currentCard;
+    secondCard = currentCard === firstCard ? null : currentCard;
+  }
+  if (firstCard && secondCard) {
+    disableClicks = true;
+    if (firstCard.lastChild.src === secondCard.lastChild.src) {
+      cardsFlipped += 2;
+      firstCard = null;
+      secondCard = null;
+      disableClicks = false;
+      if (cardsFlipped === 24) {
+        finishGame();
+      }
+    } else {
+      setTimeout(() => {
+        flipCard(firstCard);
+        flipCard(secondCard);
+        firstCard = null;
+        secondCard = null;
+        updateScore();
+        disableClicks = false;
+      }, 1000);
+    }
+  }
+};
+
+// Adds a click listener to all the boxes except the score box
+const addListeners = () => {
+  for (let row of gamePage.children) {
+    for (let box of row.children) {
+      if (!box.classList.contains('middle-tile')) {
+        box.addEventListener('click', () => {
+          handleCardClick(box);
+        });
+      }
+    }
+  }
 };
 
 // When the start game button is clicked, the game is initialized
@@ -106,7 +209,12 @@ const initGame = () => {
   dissipateTitle();
   addBack();
   addFront();
+  firstReveal();
   addListeners();
 };
 
+// The event that restarts the game
+restartButton.addEventListener('click', () => window.location.reload());
+
+// The event that starts the game when the start game button is pressed
 startButton.addEventListener('click', initGame);
